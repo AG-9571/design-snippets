@@ -1,9 +1,26 @@
+/*
+@Package     Glass-morphism
+@Version     1.0.0
+@Since       1.0.0
+@Link        https::after
+@Author      Angel Ortega - [-AOMerge](codenode.ortega@gmail.com)
+@AuthorURI:  https://github.com/AOMerge
+@License     MIT License */
+
+/* >>>  TABLE OF CONTENTS:
+    >>  Style Basic
+    >>	Style Glass
+    >>	Style Responsive
+*/
+
 /* style basic */
 @font-face {
     font-family: antipasto;
     src: url('./font/antipasto.bold.ttf');
 }
 body{
+    margin: 0;
+    overflow: hidden;
     font-family: antipasto;
     width: 100%;
     display: flex;
@@ -17,8 +34,9 @@ body{
 /* style glass */
 div.glass{
     border-radius: 17px;
-    height: 60vh;
-    width: 20%;
+    padding-block: 3%;
+    height: 75vh;
+    width: 40%;
     background-color: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(5px);
     border: white solid 1px;
@@ -27,7 +45,7 @@ div.glass{
     grid-template-columns: repeat(3, 1fr);
 }
 div.glass button.glass-morphi{
-    padding-inline-start: 3%;
+    padding-inline: 3%;
     text-align: start;
     grid-column: 1/4;
     grid-row: 6;
@@ -66,3 +84,22 @@ div.glass div{
     grid-row: 2/5;
 }
 /* style glass end */
+
+/* style Responsive */
+@media only screen and (max-width: 600px) {
+    div.glass{
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 450px) {
+    div.glass{
+        width: 80%;
+        height: 60vh;
+    }
+}
+@media only screen and (max-width: 820px) {
+    div.glass{
+        width: 70%;
+    }
+}
+/* style Responsive end */
