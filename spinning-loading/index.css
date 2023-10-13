@@ -1,0 +1,38 @@
+@keyframes Spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+body{
+    background-color: #151515;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+div.loading{
+    position: relative;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    
+}
+div.loading::after,div.loading::before{
+    content: " ";
+    position: absolute;
+    border-radius: inherit;
+}
+div.loading::before{
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, #ff00cc 0%, #333399 100%);
+    animation: Spin .5s infinite linear;
+}
+div.loading::after{
+    width: 85%;
+    height: 85%;
+    background: #151515;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
