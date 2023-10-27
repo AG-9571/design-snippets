@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuito</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            font-family: sans-serif;
+            font-size: 1rem;
+            background-color: black;
+            color: aliceblue;            
+        }
+        div.content{
+            width: 100%;
+            overflow: hidden;                                                       
+            display: grid;
+        }
+        section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem;
+            border: white 1px solid;
+        }
+        button{
+            width: 2rem;
+            height: 2rem;
+            border-radius: 10%;
+            background-color: #1e1e1e;
+            border: 1px solid #1e1e1e;
+            color: aliceblue;
+            font-size: 1.2rem;
+            margin: 0.5rem;
+        }
+        h1{
+            text-align: center;
+        }
+        main{
+            max-width: 800px;      
+            width: 78%;
+            margin-inline: 5%;
+            padding: 25px;
+            border: #cfc1c1 solid 2px;
+            border-radius: 20px;
+            height: 72vh;
+        }
+        /* Estilo básico para el checkbox */
+        .custom-checkbox {
+            position: relative;
+            padding-left: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        /* Esconde el checkbox original */
+        input[type="checkbox"] {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        /* Crea un cuadro personalizado */
+        .bit1::content {            
+            height: 20px;
+            width: 20px;
+            background-color: #bf1212;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Calculadora de bits</h1>    
+        <main>
+            <section>
+                <label for="">Result</label>
+                <div>
+                    <button></button>
+                    <button></button>
+                    <label for="" class="result">0 0</label>
+                </div>
+            </section>
+            <section class="Operation">
+                <label for="bit1" class="bit">Operation</label>
+                <br>         
+                <div>            
+                    <label class="operation" for="">0 0</label>
+                </div> 
+                <strong>+</strong>
+                <div>
+                    <label class="operation" for="">0 0</label>
+                </div> 
+            </section>
+            <section>
+                <select id="dino-select">        
+                    <optgroup label="Type of bytes">
+                        <option>2</option>
+                        <option>4</option>
+                        <option>8</option>
+                    </optgroup>        
+                </select>
+                <select id="dino-select"> 
+                    <optgroup label="Operation">
+                        <option>Sum</option>
+                        <option>Restar</option>
+                        <option>Multiplicar</option>
+                    </optgroup>        
+                </select>
+                <label for="bit1" class="bit">Numbre bits</label>    
+                <div>
+                    <input type="checkbox" class="bit1"> 
+                    <span class="checkmark"></span>
+                    <input type="checkbox" class="bit1"> 
+                    <label for="" class="NumberBits"> 0 0</label>
+                </div>
+            
+                <div>
+                    <input type="checkbox" class="bit2"> 
+                    <input type="checkbox" class="bit2"> 
+                    <label for="" class="NumberBits"> 0 0</label>
+                </div>
+            </section>
+        </main>
+
+    </div>
+</body>
+<script>
+    async function sum(values = []) {
+        try {
+            const buttons = document.querySelectorAll('button');
+            const operations = document.querySelectorAll('label.operation');         
+            const Result = document.querySelectorAll('label.result');
+            // Cambiar el background-color del botón correspondiente
+             for (let i = 0; i < operations.length; i++) {
+                
+                const value1 = values[i] ? 1 : 0;
+                const value2 = values[i + 2] ? 1 : 0;
+                
+                if (values[i] === values[i + 2]) {
+                    operations[i].innerHTML = `${value1} ${value2}`;
+                    // Cambio de color para el primer y tercer botón                      
+                } else {
+                    operations[i].innerHTML = `${value1} ${value2}`;                         
+                }                     
+
+                
+            }
+            const value1 = (values[0] ? 1 : 0) * 2 + (values[1] ? 1 : 0); // Convertir los primeros dos bits a decimal
+            const value2 = (values[2] ? 1 : 0) * 2 + (values[3] ? 1 : 0); // Convertir los siguientes dos bits a decimal
+
+            const result = value1 + value2;  // Sumar en decimal
+            const resultBinary = result.toString(2).padStart(2, '0'); // Convertir el resultado a binario y asegurar que tiene 2 dígitos
+            // Actualizar la operación y el resultado en el DOM
+            Result[0].innerHTML = resultBinary;
+
+            // Cambiar el color de los botones de resultado
+            buttons[0].style.backgroundColor = resultBinary[0] === '1' ? 'green' : '#1e1e1e';
+            buttons[1].style.backgroundColor = resultBinary[1] === '1' ? 'green' : '#1e1e1e';
+        } catch (error) {
+            console.error(error)
+        }
+
+    }   
+
+    async function bits ()
+    {
+        // Lista de clases para seleccionar los bits
+        const bitClasses = ['.bit1', '.bit2']; // Añade más clases aquí según tus necesidades
+
+        // Seleccionamos todos los bits basándonos en las clases
+        const allBits = bitClasses.map(className => document.querySelectorAll(className));
+
+        const NumberBits = document.querySelectorAll('.NumberBits');
+
+        function updateBitsAndSum() {
+            allBits.forEach((bitGroup, index) => {
+                NumberBits[index].innerHTML = Array.from(bitGroup).map(bit => bit.checked ? 1 : 0).join(" ");
+            });
+            const flattenedBitsArray = [].concat(...allBits.map(group => Array.from(group)));            
+
+            // Pasamos todos los bits a la función sum
+            sum(flattenedBitsArray.map(bit => bit.checked));
+        }
+
+        allBits.forEach(bitGroup => {
+            bitGroup.forEach(bit => {
+                bit.addEventListener('click', updateBitsAndSum);
+            });
+        });
+
+    }
+    bits();
+</script>
+</html>
+
+
+
